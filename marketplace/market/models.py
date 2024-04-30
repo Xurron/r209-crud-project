@@ -14,6 +14,7 @@ class User(models.Model):
     name = models.CharField(max_length=100)
     email = models.EmailField(max_length=100)
     password = models.CharField(max_length=100)
+    grade = models.CharField(max_length=100, default="Acheteur")
 
     def __str__(self):
         chaine = f"{self.name} - {self.email}"
@@ -24,3 +25,6 @@ class User(models.Model):
             return True
         else:
             return False
+
+    def get_grade(self):
+        return self.grade

@@ -7,8 +7,13 @@ from .models import Item
 from .models import User
 
 def index(request):
-    Items = Item.objects.all()
-    return render(request, 'market/index.html', {'Items': Items})
+    if 'user_id' in request.session:
+        Items = Item.objects.all()
+        user = User.objects.get(id=request.session['user_id'])
+        grade = user.get_grade()
+        return render(request, 'market/index.html', {'Items': Items, 'grade': grade})
+    else:
+        return HttpResponseRedirect('/market/login')
 
 def login(request):
     return render(request, 'market/login/login.html')
@@ -20,14 +25,16 @@ def login_user(request):
         Users = User.objects.all()
         for user in Users:
             if user.verify(username, password):
-                request.session['user'] = user.id
+                request.session['user_id'] = user.id
+                request.session['user_name'] = user.name
                 return HttpResponseRedirect('/market')
         return render(request, 'market/login/login.html', {'error': 'Invalid credentials'})
     else:
         return render(request, 'market/login/login.html')
 
 def logout(request):
-    del request.session['user']
+    del request.session['user_id']
+    del request.session['user_name']
     return HttpResponseRedirect('/market')
 
 def items(request, id):

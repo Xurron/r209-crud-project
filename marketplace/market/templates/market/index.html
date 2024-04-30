@@ -10,8 +10,9 @@
     <h1>Accueil</h1>
     <p>Bienvenue sur le site du marketplace</p>
 
-    {% if request.session.user %}
-        <p>Bienvenue, {{ request.session.user }}!</p>
+    {% if request.session.user_id %}
+        <p>Bienvenue, {{ request.session.user_name }} !</p>
+        <p>Vous avez actuellement le grade : "{{ grade }}"</p>
         <p><a href="/market/logout">Déconnexion</a></p>
     {% else %}
         <p>Bienvenue sur le site du marketplace. <a href="/market/login">Connectez-vous</a></p>
