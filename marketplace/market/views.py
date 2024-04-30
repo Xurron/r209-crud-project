@@ -78,4 +78,11 @@ def delete_user(request, id):
     return render(request, 'market/users/delete.html')
 
 def update_user(request, id):
-    return render(request, 'market/users/update.html')
+    uform = UserForm(request.POST)
+    if uform.is_valid():
+        User = uform.save(commit=False)
+        User.id = id
+        User.save()
+        return HttpResponseRedirect('/market')
+    else:
+        return render(request, 'market/users/update.html', {'form': uform, 'id': id})
