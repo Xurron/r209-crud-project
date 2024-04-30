@@ -1,6 +1,7 @@
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from .forms import ItemForm, UserForm
+
 from . import models
 from .models import Item
 from .models import User
@@ -8,6 +9,26 @@ from .models import User
 def index(request):
     Items = Item.objects.all()
     return render(request, 'market/index.html', {'Items': Items})
+
+def login(request):
+    return render(request, 'market/login/login.html')
+
+def login_user(request):
+    if request.method == "POST":
+        username = request.POST['username']
+        password = request.POST['password']
+        Users = User.objects.all()
+        for user in Users:
+            if user.verify(username, password):
+                request.session['user'] = user.id
+                return HttpResponseRedirect('/market')
+        return render(request, 'market/login/login.html', {'error': 'Invalid credentials'})
+    else:
+        return render(request, 'market/login/login.html')
+
+def logout(request):
+    del request.session['user']
+    return HttpResponseRedirect('/market')
 
 def items(request, id):
     Items = Item.objects.get(id=id)
