@@ -23,3 +23,23 @@ class ItemForm(ModelForm):
                 'max_length': _("Le nom de l\'article est trop long."),
             },
         }
+
+class UserForm(ModelForm):
+    class Meta:
+        model = models.User
+        fields = ['name', 'email', 'password']
+        labels = {
+            'name': _('Nom'),
+            'email': _('Email'),
+            'password': _('Mot de passe'),
+        }
+        help_texts = {
+            'name': _('Saisir le nom de l\'utilisateur'),
+            'email': _('Saisir l\'email de l\'utilisateur'),
+            'password': _('Saisir le mot de passe de l\'utilisateur'),
+        }
+        error_messages = {
+            'name': {
+                'max_length': _("Le nom de l\'utilisateur est trop long."),
+            },
+        }

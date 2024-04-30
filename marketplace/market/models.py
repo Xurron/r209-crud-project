@@ -9,3 +9,12 @@ class Item(models.Model):
     def __str__(self):
         chaine = f"{self.name} - {self.price} - {self.quantity}"
         return chaine
+
+class User(models.Model):
+    name = models.CharField(max_length=100)
+    email = models.EmailField(max_length=100)
+    password = models.CharField(max_length=100)
+
+    def __str__(self):
+        chaine = f"{self.name} - {self.email}"
+        return chaine

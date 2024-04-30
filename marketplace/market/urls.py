@@ -12,8 +12,10 @@ urlpatterns = [
 
     path('items/traitement_add_item', views.traitement_add_item),
 
-    path('users/', views.users),
+    path('users/<int:id>/', views.users),
     path('users/add/', views.add_user),
     path('users/delete/<int:id>/', views.delete_user),
     path('users/update/<int:id>/', views.update_user),
+
+    path('users/traitement_add_user', views.traitement_add_user),
 ]
