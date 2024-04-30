@@ -7,6 +7,10 @@
     <title></title>
 </head>
 <body>
-
+    <form method="post" action="/market/users/update/{{id}}/">
+        {% csrf_token %}
+        {{ form.as_ul }}
+        <input type="submit" value="Modifier l'utilisateur">
+    </form>
 </body>
 </html>
