@@ -18,3 +18,9 @@ class User(models.Model):
     def __str__(self):
         chaine = f"{self.name} - {self.email}"
         return chaine
+
+    def verify(self, username, password):
+        if self.name == username and self.password == password:
+            return True
+        else:
+            return False
