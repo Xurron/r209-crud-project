@@ -1,0 +1,11 @@
+# Endpoint
+
+Liste des items : `/market/items`
+Ajout d'un item : `/market/items/add`
+Suppression d'un item : `/market/items/delete/id`
+Modification d'un item : `/market/items/update/id`
+
+Liste des utilisateurs : `/market/users`
+Ajout d'un utilisateur : `/market/users/add`
+Suppression d'un utilisateur : `/market/users/delete/id`
+Modification d'un utilisateur : `/market/users/update/id`
