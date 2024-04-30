@@ -55,7 +55,9 @@ def add_item(request):
             if request.method == "POST":
                 form = ItemForm(request.POST)
                 if form.is_valid():
-                    Item = form.save()
+                    Item = form.save(commit=False)
+                    Item.vendeur_id = user.id
+                    Item.save()
                     return render(request, 'market/items/item.html', {'Item': Item})
                 else:
                     return render(request, 'market/items/add.html', {'form': form})
@@ -70,7 +72,9 @@ def add_item(request):
 def traitement_add_item(request):
     iform = ItemForm(request.POST)
     if iform.is_valid():
-        Item = iform.save()
+        Item = iform.save(commit=False)
+        Item.vendeur_id = request.session['user_id']
+        Item.save()
         return render(request, 'market/items/item.html', {'Item': Item})
     else:
         return render(request, 'market/items/add.html', {'form': iform})
