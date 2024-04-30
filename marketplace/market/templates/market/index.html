@@ -8,6 +8,10 @@
 </head>
 <body>
     <h1>Accueil</h1>
-    <p>Bienvenue sur le site de la marketplace</p>
+    <p>Bienvenue sur le site du marketplace</p>
+
+    {% for item in Items %}
+        <p>{{item.id}} : {{ item }}</p>
+    {% endfor %}
 </body>
 </html>
