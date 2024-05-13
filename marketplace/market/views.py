@@ -10,8 +10,7 @@ def index(request):
     if 'user_id' in request.session:
         Items = Item.objects.all()
         user = User.objects.get(id=request.session['user_id'])
-        grade = user.get_grade()
-        return render(request, 'market/index.html', {'Items': Items, 'grade': grade})
+        return render(request, 'market/index.html', {'Items': Items})
     else:
         return HttpResponseRedirect('/market/login')
 
@@ -50,22 +49,18 @@ def items(request, id):
 def add_item(request):
     if 'user_id' in request.session:
         user = User.objects.get(id=request.session['user_id'])
-        grade = user.get_grade()
-        if grade == "Vendeur" or grade == "Administrateur" or grade == "Fondateur":
-            if request.method == "POST":
-                form = ItemForm(request.POST)
-                if form.is_valid():
-                    Item = form.save(commit=False)
-                    Item.vendeur_id = user.id
-                    Item.save()
-                    return render(request, 'market/items/item.html', {'Item': Item})
-                else:
-                    return render(request, 'market/items/add.html', {'form': form})
+        if request.method == "POST":
+            form = ItemForm(request.POST)
+            if form.is_valid():
+                Item = form.save(commit=False)
+                Item.vendeur_id = user.id
+                Item.save()
+                return render(request, 'market/items/item.html', {'Item': Item})
             else:
-                form = ItemForm()
                 return render(request, 'market/items/add.html', {'form': form})
         else:
-            return HttpResponseRedirect('/market')
+            form = ItemForm()
+            return render(request, 'market/items/add.html', {'form': form})
     else:
         return HttpResponseRedirect('/market/login')
 
@@ -80,18 +75,22 @@ def traitement_add_item(request):
         return render(request, 'market/items/add.html', {'form': iform})
 
 def delete_item(request, id):
+    user = User.objects.get(id=request.session['user_id'])
     Items = Item.objects.get(id=id)
-    Items.delete()
-    return render(request, 'market/items/delete.html')
+    if user.id == Items.vendeur_id:
+        Items.delete()
+        return render(request, 'market/items/delete.html')
+    else:
+        return HttpResponseRedirect('/market')
 
 def update_item(request, id):
     if 'user_id' in request.session:
         user = User.objects.get(id=request.session['user_id'])
-        grade = user.get_grade()
-        if grade == "Vendeur" or grade == "Administrateur" or grade == "Fondateur":
+        item = Item.objects.get(id=id)
+        if user.id == item.vendeur_id:
             iform = ItemForm(request.POST)
             if iform.is_valid():
-                Item = iform.save(commit=False)
+                Item_instance = iform.save(commit=False)
                 Item.id = id
                 Item.save()
                 return HttpResponseRedirect('/market')
@@ -105,9 +104,8 @@ def update_item(request, id):
 def users(request, id):
     if 'user_id' in request.session:
         user = User.objects.get(id=request.session['user_id'])
-        grade = user.get_grade()
-        if grade == "Administrateur" or grade == "Fondateur":
-            Users = User.objects.get(id=id)
+        Users = User.objects.get(id=id)
+        if user.id == Users.id:
             return render(request, 'market/users/user.html', {'Users': Users})
         else:
             return HttpResponseRedirect('/market')
@@ -116,23 +114,18 @@ def users(request, id):
 
 def add_user(request):
     if 'user_id' in request.session:
-        user = User.objects.get(id=request.session['user_id'])
-        grade = user.get_grade()
-        if grade == "Administrateur" or grade == "Fondateur":
-            if request.method == "POST":
-                form = UserForm(request.POST)
-                if form.is_valid():
-                    user = form.save()
-                    return render(request, 'market/users/user.html', {'User': User})
-                else:
-                    return render(request, 'market/users/add.html', {'form': form})
+        return HttpResponseRedirect('/market/login')
+    else:
+        if request.method == "POST":
+            form = UserForm(request.POST)
+            if form.is_valid():
+                user = form.save()
+                return render(request, 'market/users/user.html', {'User': User})
             else:
-                form = UserForm()
                 return render(request, 'market/users/add.html', {'form': form})
         else:
-            return HttpResponseRedirect('/market')
-    else:
-        return HttpResponseRedirect('/market/login')
+            form = UserForm()
+            return render(request, 'market/users/add.html', {'form': form})
 
 def traitement_add_user(request):
     uform = UserForm(request.POST)
@@ -145,9 +138,8 @@ def traitement_add_user(request):
 def delete_user(request, id):
     if 'user_id' in request.session:
         user = User.objects.get(id=request.session['user_id'])
-        grade = user.get_grade()
-        if grade == "Administrateur" or grade == "Fondateur":
-            Users = User.objects.get(id=id)
+        Users = User.objects.get(id=id)
+        if user.id == Users.id:
             Users.delete()
             return render(request, 'market/users/delete.html')
         else:
@@ -158,9 +150,9 @@ def delete_user(request, id):
 def update_user(request, id):
     if 'user_id' in request.session:
         user = User.objects.get(id=request.session['user_id'])
-        grade = user.get_grade()
-        if grade == "Administrateur" or grade == "Fondateur":
-            uform = UserForm(request.POST)
+        Users = User.objects.get(id=id)
+        uform = UserForm(request.POST)
+        if user.id == Users.id:
             if uform.is_valid():
                 user = uform.save(commit=False)
                 user.id = id
