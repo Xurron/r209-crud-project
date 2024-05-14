@@ -33,19 +33,16 @@ python manage.py runserver
 - Accueil : `/market/` ⚠️ Si vous n'êtes pas connecté, vous serez redirigé vers la page de connexion
 - Connexion : `/market/login/`
 - Déconnexion : `/market/logout/`
-
-
+---
 - Détail d'un item : `/market/items/id`
 - Ajout d'un item : `/market/items/add`
 - Suppression d'un item : `/market/items/delete/id` ⚠️ Il faut être propriétaire de l'item pour le supprimer
 - Modification d'un item : `/market/items/update/id` ⚠️ Il faut être propriétaire de l'item pour le modifier
-
-
+---
 - Détail d'un utilisateur : `/market/users/id`
 - Ajout d'un utilisateur : `/market/users/add`
 - Suppression d'un utilisateur : `/market/users/delete/id` ⚠️ Il est impossible de supprimer un autre utilisateur que soi-même
 - Modification d'un utilisateur : `/market/users/update/id` ⚠️ Il est impossible de modifier un autre utilisateur que soi-même
-
-
+---
 - Liste des commandes : `/market/commandes/` ⚠️ Il est impossible d'accéder aux commandes des autres utilisateurs
 - Suppression d'une commande : `/market/commandes/delete/id` ⚠️ Il est impossible de supprimer une commande qui ne vous appartient pas
