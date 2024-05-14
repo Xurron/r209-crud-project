@@ -70,7 +70,7 @@ def traitement_add_item(request):
         Item = iform.save(commit=False)
         Item.vendeur_id = request.session['user_id']
         Item.save()
-        return render(request, 'market/items/item.html', {'Item': Item})
+        return HttpResponseRedirect('/market')
     else:
         return render(request, 'market/items/add.html', {'form': iform})
 
@@ -95,8 +95,8 @@ def update_item(request, id):
             iform = ItemForm(request.POST)
             if iform.is_valid():
                 Item_instance = iform.save(commit=False)
-                Item.id = id
-                Item.save()
+                Item_instance.vendeur_id = user.id
+                Item_instance.save()
                 return HttpResponseRedirect('/market')
             else:
                 return render(request, 'market/items/update.html', {'form': iform, 'id': id})
