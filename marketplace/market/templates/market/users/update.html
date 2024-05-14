@@ -4,7 +4,7 @@
     {% load static %}
     <meta charset="UTF-8">
     <link rel="stylesheet" type="text/css" href="{%static 'market/style.css' %}">
-    <title></title>
+    <title>Marketplace - Modification d'un utilisateur</title>
 </head>
 <body>
     <form method="post" action="/market/users/update/{{id}}/">
@@ -12,5 +12,7 @@
         {{ form.as_ul }}
         <input type="submit" value="Modifier l'utilisateur">
     </form>
+
+    <a href="/market">Retourner à l'accueil</a>
 </body>
 </html>

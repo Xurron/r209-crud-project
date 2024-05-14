@@ -4,10 +4,18 @@
     {% load static %}
     <meta charset="UTF-8">
     <link rel="stylesheet" type="text/css" href="{%static 'market/style.css' %}">
-    <title>Liste des produits</title>
+    <title>Marketplace - Liste du produit : {{ Items.name }}</title>
 </head>
 <body>
-    <h1>Fiche produit</h1>
-    <p>{{Items}} </p>
+    <h1>Fiche produit : {{ Items.name }}</h1>
+    <p>{{ Items.price }}</p>
+    <p>{{ Items.description }}</p>
+    <p>{{ Items.quantity }}</p>
+    <p>{{ Items.vendeur_id }}</p>
+
+    <a href="/market/items/update/{{ Items.id }}">Modifier le produit</a>
+    <a href="/market/items/delete/{{ Items.id }}">Supprimer le produit</a>
+
+    <a href="/market">Retourner à l'accueil</a>
 </body>
 </html>

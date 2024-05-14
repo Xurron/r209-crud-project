@@ -4,21 +4,32 @@
     {% load static %}
     <meta charset="UTF-8">
     <link rel="stylesheet" type="text/css" href="{%static 'market/style.css' %}">
-    <title>Accueil</title>
+    <title>Marketplace - Accueil</title>
 </head>
 <body>
-    <h1>Accueil</h1>
-    <p>Bienvenue sur le site du marketplace</p>
+    <h1>Bienvenue</h1>
 
     {% if request.session.user_id %}
-        <p>Bienvenue, {{ request.session.user_name }} !</p>
-        <p><a href="/market/logout">Déconnexion</a></p>
+        <p>Bonjour {{ request.session.user_name }} ! <a href="/market/logout">Déconnexion</a></p>
+
+        <a href="/market/items/add">Ajouter un produit</a>
+        <a href="/market/users/{{ request.session.user_id }}">Voir mon profil</a>
+
     {% else %}
         <p>Bienvenue sur le site du marketplace. <a href="/market/login">Connectez-vous</a></p>
     {% endif %}
 
+    <h2>Produits en vente</h2>
+
     {% for item in Items %}
-        <p>{{item.id}} : {{ item }}</p>
+        <div>
+            <h4>{{ item.name }}</h4>
+            <p>{{ item.description }}</p>
+            <p>{{ item.price }} €</p>
+            <p>{{ item.quantity }} produit en stock</p>
+
+            <a href="/market/items/{{ item.id }}">Voir la fiche du produit</a>
+        </div>
     {% endfor %}
 </body>
 </html>

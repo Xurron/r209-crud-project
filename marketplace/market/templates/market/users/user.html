@@ -4,10 +4,17 @@
     {% load static %}
     <meta charset="UTF-8">
     <link rel="stylesheet" type="text/css" href="{%static 'market/style.css' %}">
-    <title></title>
+    <title>Marketplace - Fiche de l'utilisateur : {{ Users.name }}</title>
 </head>
 <body>
-    <h1>Fiche utilisateur</h1>
-    <p>{{Users}}</p>
+    <h1>Fiche de l'utilisateur : {{ Users.name }}</h1>
+    <p>Votre ID : {{Users.id}}</p>
+    <p>Votre nom d'utilisateur : {{Users.name}}</p>
+    <p>Votre mail : {{Users.email}}</p>
+
+    <a href="/market/users/update/{{Users.id}}">Modifier le compte</a>
+    <a href="/market/users/delete/{{Users.id}}">Supprimer le compte</a>
+
+    <a href="/market">Retour à l'accueil</a>
 </body>
 </html>
