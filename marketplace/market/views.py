@@ -1,5 +1,6 @@
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
+from django.contrib import messages
 from .forms import ItemForm, UserForm
 
 from . import models
@@ -9,7 +10,6 @@ from .models import User
 def index(request):
     if 'user_id' in request.session:
         Items = Item.objects.all()
-        user = User.objects.get(id=request.session['user_id'])
         return render(request, 'market/index.html', {'Items': Items})
     else:
         return HttpResponseRedirect('/market/login')
@@ -75,13 +75,17 @@ def traitement_add_item(request):
         return render(request, 'market/items/add.html', {'form': iform})
 
 def delete_item(request, id):
-    user = User.objects.get(id=request.session['user_id'])
-    Items = Item.objects.get(id=id)
-    if user.id == Items.vendeur_id:
-        Items.delete()
-        return render(request, 'market/items/delete.html')
+    if 'user_id' in request.session:
+        user = User.objects.get(id=request.session['user_id'])
+        Items = Item.objects.get(id=id)
+        if user.id == Items.vendeur_id:
+            Items.delete()
+            return render(request, 'market/items/delete.html')
+        else:
+            messages.error(request, "Vous n'êtes pas autorisé à accéder à cette page.")
+            return HttpResponseRedirect('/market')
     else:
-        return HttpResponseRedirect('/market')
+        return HttpResponseRedirect('/market/login')
 
 def update_item(request, id):
     if 'user_id' in request.session:
@@ -97,6 +101,7 @@ def update_item(request, id):
             else:
                 return render(request, 'market/items/update.html', {'form': iform, 'id': id})
         else:
+            messages.error(request, "Vous n'êtes pas autorisé à accéder à cette page.")
             return HttpResponseRedirect('/market')
     else:
         return HttpResponseRedirect('/market/login')
@@ -108,6 +113,7 @@ def users(request, id):
         if user.id == Users.id:
             return render(request, 'market/users/user.html', {'Users': Users})
         else:
+            messages.error(request, "Vous n'êtes pas autorisé à accéder à cette page.")
             return HttpResponseRedirect('/market')
     else:
         return HttpResponseRedirect('/market/login')
@@ -143,6 +149,7 @@ def delete_user(request, id):
             Users.delete()
             return render(request, 'market/users/delete.html')
         else:
+            messages.error(request, "Vous n'êtes pas autorisé à accéder à cette page.")
             return HttpResponseRedirect('/market')
     else:
         return HttpResponseRedirect('/market/login')
@@ -161,6 +168,7 @@ def update_user(request, id):
             else:
                 return render(request, 'market/users/update.html', {'form': uform, 'id': id})
         else:
+            messages.error(request, "Vous n'êtes pas autorisé à accéder à cette page.")
             return HttpResponseRedirect('/market')
     else:
         return HttpResponseRedirect('/market/login')

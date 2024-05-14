@@ -9,6 +9,12 @@
 <body>
     <h1>Bienvenue</h1>
 
+    {% if messages %}
+        {% for message in messages %}
+        <p>{{ message }}</p>
+        {% endfor %}
+    {% endif %}
+
     {% if request.session.user_id %}
         <p>Bonjour {{ request.session.user_name }} ! <a href="/market/logout">Déconnexion</a></p>
 
