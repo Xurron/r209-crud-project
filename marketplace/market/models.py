@@ -5,7 +5,7 @@ class Item(models.Model):
     price = models.DecimalField(max_digits=10, decimal_places=2)
     description = models.TextField(blank=False)
     quantity = models.IntegerField(blank=False)
-    vendeur_id = models.IntegerField(blank=False)
+    vendeur_id = models.ForeignKey('User', on_delete=models.CASCADE)
 
     def __str__(self):
         chaine = f"Nom : {self.name}\rPrix : {self.price}\rDescription : {self.description}\rQuantité : {self.quantity}\rVendeur : {self.vendeur_id}"

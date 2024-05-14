@@ -68,8 +68,9 @@ def add_item(request):
 def traitement_add_item(request):
     iform = ItemForm(request.POST)
     if iform.is_valid():
+        user = User.objects.get(id=request.session['user_id'])
         Item = iform.save(commit=False)
-        Item.vendeur_id = request.session['user_id']
+        Item.vendeur_id = user
         Item.save()
         return HttpResponseRedirect('/market')
     else:
