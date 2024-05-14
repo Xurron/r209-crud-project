@@ -1,16 +1,14 @@
 # R209 - Projet CRUD Marketplace
 
-## Description
+## Description & présentation du projet
 
 Le projet consiste à créer une boutique en ligne avec les fonctionnalités CRUD (Create, Read, Update, Delete) pour les items et les utilisateurs. Le site peut être utilisé pour autre chose qu'une boutique puisqu'il n'y a pas de section "panier / mes commandes" et "paiement".
 
-## Fonctionnalités
-
-Listez ici les principales fonctionnalités de votre projet. Par exemple :
-
-- Fonctionnalité 1 : Description de la fonctionnalité 1.
-- Fonctionnalité 2 : Description de la fonctionnalité 2.
-- Fonctionnalité 3 : Description de la fonctionnalité 3.
+Le projet inclut les fonctionnalités suivantes :
+- CRUD pour les items
+- CRUD pour les utilisateurs
+- Authentification des utilisateurs
+- Système de réception des commandes
 
 ## Installation & lancement du projet
 
@@ -24,21 +22,30 @@ cd marketplace
 python manage.py runserver
 ```
 
-## à faire
-- détail pages HTML
-- mise en place d'un retrait d'un article quand on commande et quand un utilisateur supprime son compte (ça supprime tous les articles au quel il est vendeur)
-- CSS
-- faire de vrai utilisateur et les mettres dans le readme
-- se connecter directement quand on créer un compte
+<u>Lien pour accéder au serveur :</u> http://127.0.0.1:8000/market/login/
 
-### Endpoint
+<u>Les comptes utilisateurs déjà créés :</u>
+- Nom d'utilisateur : `admin` & Mot de passe : `admin`
+- Nom d'utilisateur : `toto` & Mot de passe : `toto`
 
-Liste des items : `/market/items`
-Ajout d'un item : `/market/items/add`
-Suppression d'un item : `/market/items/delete/id`
-Modification d'un item : `/market/items/update/id`
+### Liste des endpoint
 
-Liste des utilisateurs : `/market/users`
-Ajout d'un utilisateur : `/market/users/add`
-Suppression d'un utilisateur : `/market/users/delete/id`
-Modification d'un utilisateur : `/market/users/update/id`
+- Accueil : `/market/` ⚠️ Si vous n'êtes pas connecté, vous serez redirigé vers la page de connexion
+- Connexion : `/market/login/`
+- Déconnexion : `/market/logout/`
+
+
+- Détail d'un item : `/market/items/id`
+- Ajout d'un item : `/market/items/add`
+- Suppression d'un item : `/market/items/delete/id` ⚠️ Il faut être propriétaire de l'item pour le supprimer
+- Modification d'un item : `/market/items/update/id` ⚠️ Il faut être propriétaire de l'item pour le modifier
+
+
+- Détail d'un utilisateur : `/market/users/id`
+- Ajout d'un utilisateur : `/market/users/add`
+- Suppression d'un utilisateur : `/market/users/delete/id` ⚠️ Il est impossible de supprimer un autre utilisateur que soi-même
+- Modification d'un utilisateur : `/market/users/update/id` ⚠️ Il est impossible de modifier un autre utilisateur que soi-même
+
+
+- Liste des commandes : `/market/commandes/` ⚠️ Il est impossible d'accéder aux commandes des autres utilisateurs
+- Suppression d'une commande : `/market/commandes/delete/id` ⚠️ Il est impossible de supprimer une commande qui ne vous appartient pas
