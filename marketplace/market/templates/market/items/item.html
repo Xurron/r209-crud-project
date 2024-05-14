@@ -7,15 +7,28 @@
     <title>Marketplace - Liste du produit : {{ Items.name }}</title>
 </head>
 <body>
-    <h1>Fiche produit : {{ Items.name }}</h1>
-    <p>{{ Items.price }}</p>
-    <p>{{ Items.description }}</p>
-    <p>{{ Items.quantity }}</p>
-    <p>{{ Items.vendeur_id }}</p>
-
     <a href="/market/items/update/{{ Items.id }}">Modifier le produit</a>
     <a href="/market/items/delete/{{ Items.id }}">Supprimer le produit</a>
 
     <a href="/market">Retourner à l'accueil</a>
+
+    <h1>Fiche produit : {{ Items.name }}</h1>
+
+    <p>Prix : {{ Items.price }} €</p>
+    <p>Description : {{ Items.description }}</p>
+    <p>Quantité en stock : {{ Items.quantity }}</p>
+    <p>Vendeur : {{ vendeur.name }}</p>
+
+    {% if Items.quantity > 0 %}
+        <form method="post" action="/market/items/buy/{{ Items.id }}/">
+        {% csrf_token %}
+        <label for="quantity">Quantité à acheter :</label>
+        <input type="number" id="quantity" name="quantity" min="1" max="{{ Items.quantity }}" required>
+        <input type="submit" value="Acheter">
+        </form>
+    {% else %}
+        <p>Rupture de stock</p>
+        <button disabled>Acheter</button>
+    {% endif %}
 </body>
 </html>

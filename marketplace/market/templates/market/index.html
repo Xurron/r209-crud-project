@@ -11,7 +11,11 @@
 
     {% if messages %}
         {% for message in messages %}
-        <p>{{ message }}</p>
+            {% if message.tags == 'error' %}
+                <p class="error">{{ message }}</p>
+            {% elif message.tags == 'success' %}
+                <p class="success">{{ message }}</p>
+            {% endif %}
         {% endfor %}
     {% endif %}
 

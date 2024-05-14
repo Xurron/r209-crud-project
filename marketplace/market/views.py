@@ -44,7 +44,8 @@ def logout(request):
 
 def items(request, id):
     Items = Item.objects.get(id=id)
-    return render(request, 'market/items/item.html', {'Items': Items})
+    vendeur = User.objects.get(id=Items.vendeur_id)
+    return render(request, 'market/items/item.html', {'Items': Items, 'vendeur': vendeur})
 
 def add_item(request):
     if 'user_id' in request.session:
@@ -92,14 +93,35 @@ def update_item(request, id):
         user = User.objects.get(id=request.session['user_id'])
         item = Item.objects.get(id=id)
         if user.id == item.vendeur_id:
-            iform = ItemForm(request.POST)
-            if iform.is_valid():
-                Item_instance = iform.save(commit=False)
-                Item_instance.vendeur_id = user.id
-                Item_instance.save()
-                return HttpResponseRedirect('/market')
+            if request.method == "POST":
+                iform = ItemForm(request.POST, instance=item)
+                if iform.is_valid():
+                    Item_instance = iform.save(commit=False)
+                    Item_instance.vendeur_id = user.id
+                    Item_instance.save()
+                    return HttpResponseRedirect('/market')
+                else:
+                    return render(request, 'market/items/update.html', {'form': iform, 'id': id})
             else:
+                iform = ItemForm(instance=item)
                 return render(request, 'market/items/update.html', {'form': iform, 'id': id})
+        else:
+            messages.error(request, "Vous n'êtes pas autorisé à accéder à cette page.")
+            return HttpResponseRedirect('/market')
+    else:
+        return HttpResponseRedirect('/market/login')
+
+def buy_item(request, id):
+    if 'user_id' in request.session:
+        user = User.objects.get(id=request.session['user_id'])
+        item = Item.objects.get(id=id)
+        vendeur = User.objects.get(id=item.vendeur_id)
+        if user.id != item.vendeur_id:
+            quantity_to_buy = int(request.POST['quantity'])
+            item.quantity -= quantity_to_buy
+            item.save()
+            messages.success(request, f"Vous avez acheté {quantity_to_buy} {item.name} à un prix unitaire de {item.price} € pour un total de {quantity_to_buy * item.price} € auprès de {vendeur.name}.")
+            return HttpResponseRedirect('/market')
         else:
             messages.error(request, "Vous n'êtes pas autorisé à accéder à cette page.")
             return HttpResponseRedirect('/market')
@@ -164,13 +186,17 @@ def update_user(request, id):
         Users = User.objects.get(id=id)
         uform = UserForm(request.POST)
         if user.id == Users.id:
-            if uform.is_valid():
-                user = uform.save(commit=False)
-                user.id = id
-                user.save()
-                request.session['user_name'] = user.name
-                return HttpResponseRedirect('/market')
+            if request.method == "POST":
+                if uform.is_valid():
+                    user = uform.save(commit=False)
+                    user.id = id
+                    user.save()
+                    request.session['user_name'] = user.name
+                    return HttpResponseRedirect('/market')
+                else:
+                    return render(request, 'market/users/update.html', {'form': uform, 'id': id})
             else:
+                uform = UserForm(instance=Users)
                 return render(request, 'market/users/update.html', {'form': uform, 'id': id})
         else:
             messages.error(request, "Vous n'êtes pas autorisé à accéder à cette page.")
