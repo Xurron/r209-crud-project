@@ -25,3 +25,14 @@ class User(models.Model):
             return True
         else:
             return False
+
+class Commande(models.Model):
+    item_id = models.ForeignKey('Item', on_delete=models.CASCADE)
+    user_id = models.ForeignKey('User', on_delete=models.CASCADE)
+    vendeur_id = models.ForeignKey('User', on_delete=models.CASCADE, related_name='vendeur')
+    quantity = models.IntegerField(blank=False)
+    prix = models.DecimalField(max_digits=10, decimal_places=2)
+
+    def __str__(self):
+        chaine = f"Item : {self.item_id}\rUser : {self.user_id}\rQuantité : {self.quantity}"
+        return chaine

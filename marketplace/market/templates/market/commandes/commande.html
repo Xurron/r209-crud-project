@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="{%static 'market/style.css' %}">
+    <title>Marketplace - Liste des commandes</title>
+</head>
+<body>
+    <h1>Liste des commandes en attente de livraison</h1>
+    {% for commande in Commandes %}
+        <div>
+            <p>Nom du vendeur : {{ commande }}</p>
+            <p>Produit vendu : {{ commande.price }}</p>
+            <p>Quantité vendue : {{ commande.quantity }}</p>
+            <p>Prix de la commande : {{ commande.quantity }} €</p>
+
+            <a href="/market/commandes/delete/{{ commande.id }}/">Commande livrée</a>
+        </div>
+    {% endfor %}
+    <a href="/market">Retourner à l'accueil</a>
+</body>
+</html>

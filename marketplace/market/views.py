@@ -6,6 +6,7 @@ from .forms import ItemForm, UserForm
 from . import models
 from .models import Item
 from .models import User
+from .models import Commande
 
 def index(request):
     if 'user_id' in request.session:
@@ -44,7 +45,7 @@ def logout(request):
 
 def items(request, id):
     Items = Item.objects.get(id=id)
-    vendeur = User.objects.get(id=Items.vendeur_id)
+    vendeur = User.objects.get(id=Items.vendeur_id.id)
     return render(request, 'market/items/item.html', {'Items': Items, 'vendeur': vendeur})
 
 def add_item(request):
@@ -54,7 +55,7 @@ def add_item(request):
             form = ItemForm(request.POST)
             if form.is_valid():
                 Item = form.save(commit=False)
-                Item.vendeur_id = user.id
+                Item.vendeur_id = user
                 Item.save()
                 return render(request, 'market/items/item.html', {'Item': Item})
             else:
@@ -80,7 +81,7 @@ def delete_item(request, id):
     if 'user_id' in request.session:
         user = User.objects.get(id=request.session['user_id'])
         Items = Item.objects.get(id=id)
-        if user.id == Items.vendeur_id:
+        if user.id == Items.vendeur_id.id:
             Items.delete()
             return render(request, 'market/items/delete.html')
         else:
@@ -93,12 +94,12 @@ def update_item(request, id):
     if 'user_id' in request.session:
         user = User.objects.get(id=request.session['user_id'])
         item = Item.objects.get(id=id)
-        if user.id == item.vendeur_id:
+        if user.id == item.vendeur_id.id:
             if request.method == "POST":
                 iform = ItemForm(request.POST, instance=item)
                 if iform.is_valid():
                     Item_instance = iform.save(commit=False)
-                    Item_instance.vendeur_id = user.id
+                    Item_instance.vendeur_id.id = user.id
                     Item_instance.save()
                     return HttpResponseRedirect('/market')
                 else:
@@ -116,11 +117,15 @@ def buy_item(request, id):
     if 'user_id' in request.session:
         user = User.objects.get(id=request.session['user_id'])
         item = Item.objects.get(id=id)
-        vendeur = User.objects.get(id=item.vendeur_id)
-        if user.id != item.vendeur_id:
+        vendeur = User.objects.get(id=item.vendeur_id.id)
+        if user.id != item.vendeur_id.id:
             quantity_to_buy = int(request.POST['quantity'])
             item.quantity -= quantity_to_buy
             item.save()
+
+            commande = Commande(item_id=item, user_id=user, vendeur_id=vendeur, quantity=quantity_to_buy, prix=(quantity_to_buy * item.price))
+            commande.save()
+
             messages.success(request, f"Vous avez acheté {quantity_to_buy} {item.name} à un prix unitaire de {item.price} € pour un total de {quantity_to_buy * item.price} € auprès de {vendeur.name}.")
             return HttpResponseRedirect('/market')
         else:
@@ -199,6 +204,28 @@ def update_user(request, id):
             else:
                 uform = UserForm(instance=Users)
                 return render(request, 'market/users/update.html', {'form': uform, 'id': id})
+        else:
+            messages.error(request, "Vous n'êtes pas autorisé à accéder à cette page.")
+            return HttpResponseRedirect('/market')
+    else:
+        return HttpResponseRedirect('/market/login')
+
+def commandes(request):
+    if 'user_id' in request.session:
+        user = User.objects.get(id=request.session['user_id'])
+        Commandes = Commande.objects.filter(vendeur_id=user.id)
+        item = Item.objects.all()
+        return render(request, 'market/commandes/commande.html', {'Item': item, 'Commandes': Commandes})
+    else:
+        return HttpResponseRedirect('/market/login')
+
+def delete_commande(request, id):
+    if 'user_id' in request.session:
+        user = User.objects.get(id=request.session['user_id'])
+        commande = Commande.objects.get(id=id)
+        if user.id == commande.vendeur_id.id:
+            commande.delete()
+            return render(request, 'market/commandes/delete.html')
         else:
             messages.error(request, "Vous n'êtes pas autorisé à accéder à cette page.")
             return HttpResponseRedirect('/market')
