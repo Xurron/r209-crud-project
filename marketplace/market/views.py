@@ -137,7 +137,9 @@ def traitement_add_user(request):
     uform = UserForm(request.POST)
     if uform.is_valid():
         User = uform.save()
-        return render(request, 'market/users/user.html', {'User': User})
+        request.session['user_id'] = User.id
+        request.session['user_name'] = User.name
+        return HttpResponseRedirect('/market')
     else:
         return render(request, 'market/users/add.html', {'form': uform})
 
@@ -147,6 +149,8 @@ def delete_user(request, id):
         Users = User.objects.get(id=id)
         if user.id == Users.id:
             Users.delete()
+            del request.session['user_id']
+            del request.session['user_name']
             return render(request, 'market/users/delete.html')
         else:
             messages.error(request, "Vous n'êtes pas autorisé à accéder à cette page.")
@@ -164,6 +168,7 @@ def update_user(request, id):
                 user = uform.save(commit=False)
                 user.id = id
                 user.save()
+                request.session['user_name'] = user.name
                 return HttpResponseRedirect('/market')
             else:
                 return render(request, 'market/users/update.html', {'form': uform, 'id': id})
