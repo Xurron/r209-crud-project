@@ -9,6 +9,16 @@
 <body>
     <h1>Portail de connexion</h1>
 
+    {% if messages %}
+        {% for message in messages %}
+            {% if message.tags == 'error' %}
+                <p class="error">{{ message }}</p>
+            {% elif message.tags == 'success' %}
+                <p class="success">{{ message }}</p>
+            {% endif %}
+        {% endfor %}
+    {% endif %}
+
     <form action="login_user/" method="post" class="form-horizontal">
         {% csrf_token%}
 

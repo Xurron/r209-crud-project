@@ -31,7 +31,8 @@ def login_user(request):
                 request.session['user_id'] = user.id
                 request.session['user_name'] = user.name
                 return HttpResponseRedirect('/market')
-        return render(request, 'market/login/login.html', {'error': 'Invalid credentials'})
+            messages.error(request, "Mauvais nom d'utilisateur/mot de passe.")
+            return HttpResponseRedirect('/market/login')
     else:
         return render(request, 'market/login/login.html')
 

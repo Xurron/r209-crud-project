@@ -30,6 +30,9 @@ class UserForm(ModelForm):
     class Meta:
         model = models.User
         fields = ['name', 'email', 'password']
+        widgets = {
+            'password': forms.PasswordInput(),
+        }
         labels = {
             'name': _('Nom'),
             'email': _('Email'),
