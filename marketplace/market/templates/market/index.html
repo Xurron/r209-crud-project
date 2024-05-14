@@ -7,8 +7,6 @@
     <title>Marketplace - Accueil</title>
 </head>
 <body>
-    <h1>Bienvenue</h1>
-
     {% if messages %}
         {% for message in messages %}
             {% if message.tags == 'error' %}
@@ -20,26 +18,28 @@
     {% endif %}
 
     {% if request.session.user_id %}
-        <p>Bonjour {{ request.session.user_name }} ! <a href="/market/logout">Déconnexion</a></p>
+        <div class="user-container">
+            <p class="user">Bonjour {{ request.session.user_name }} ! <a class="btn-user" href="/market/logout">Déconnexion</a></p>
 
-        <a href="/market/items/add">Ajouter un produit</a>
-        <a href="/market/users/{{ request.session.user_id }}">Voir mon profil</a>
-        <a href="/market/commandes">Voir mes commandes en attentes de livraison</a>
+            <a class="btn-user" href="/market/items/add">Ajouter un produit</a>
+            <a class="btn-user" href="/market/users/{{ request.session.user_id }}">Voir mon profil</a>
+            <a class="btn-user" href="/market/commandes">Voir mes commandes en attentes de livraison</a>
+        </div>
 
     {% else %}
         <p>Bienvenue sur le site du marketplace. <a href="/market/login">Connectez-vous</a></p>
     {% endif %}
 
-    <h2>Produits en vente</h2>
+    <h2>Liste des produits en vente</h2>
 
     {% for item in Items %}
-        <div>
+        <div class="index-item">
             <h4>{{ item.name }}</h4>
             <p>{{ item.description }}</p>
             <p>{{ item.price }} €</p>
             <p>{{ item.quantity }} produit en stock</p>
 
-            <a href="/market/items/{{ item.id }}">Voir la fiche du produit</a>
+            <a href="/market/items/{{ item.id }}">Cliquer pour voir la fiche du produit</a>
         </div>
     {% endfor %}
 </body>

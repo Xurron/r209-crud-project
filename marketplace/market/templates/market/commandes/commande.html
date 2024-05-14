@@ -7,17 +7,16 @@
     <title>Marketplace - Liste des commandes</title>
 </head>
 <body>
+    <a class="btn-user" href="/market">Retourner à l'accueil</a>
     <h1>Liste des commandes en attente de livraison</h1>
     {% for commande in Commandes %}
-        <div>
-            <p>Nom du vendeur : {{ commande }}</p>
-            <p>Produit vendu : {{ commande.price }}</p>
+        <div class="index-item">
+            <p>Produit vendu : {{ commande.item_id.name }}</p>
             <p>Quantité vendue : {{ commande.quantity }}</p>
             <p>Prix de la commande : {{ commande.quantity }} €</p>
 
             <a href="/market/commandes/delete/{{ commande.id }}/">Commande livrée</a>
         </div>
     {% endfor %}
-    <a href="/market">Retourner à l'accueil</a>
 </body>
 </html>

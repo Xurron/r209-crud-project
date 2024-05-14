@@ -7,14 +7,16 @@
     <title>Marketplace - Fiche de l'utilisateur : {{ Users.name }}</title>
 </head>
 <body>
-    <h1>Fiche de l'utilisateur : {{ Users.name }}</h1>
-    <p>Votre ID : {{Users.id}}</p>
-    <p>Votre nom d'utilisateur : {{Users.name}}</p>
-    <p>Votre mail : {{Users.email}}</p>
+    <a class="btn-user" href="/market/users/update/{{Users.id}}">Modifier le compte</a>
+    <a class="btn-user" href="/market/users/delete/{{Users.id}}">Supprimer le compte</a>
 
-    <a href="/market/users/update/{{Users.id}}">Modifier le compte</a>
-    <a href="/market/users/delete/{{Users.id}}">Supprimer le compte</a>
+    <a class="btn-user" href="/market">Retour à l'accueil</a>
 
-    <a href="/market">Retour à l'accueil</a>
+    <div class="index-item">
+        <h1>Fiche de l'utilisateur : {{ Users.name }}</h1>
+        <p>Votre ID : {{Users.id}}</p>
+        <p>Votre nom d'utilisateur : {{Users.name}}</p>
+        <p>Votre mail : {{Users.email}}</p>
+    </div>
 </body>
 </html>

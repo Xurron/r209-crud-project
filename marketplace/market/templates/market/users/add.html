@@ -7,12 +7,12 @@
     <title>Marketplace - Création d'un compte</title>
 </head>
 <body>
+    <a class="btn-user" href="/market">Retourner à l'accueil</a>
+
     <form method="post" action="/market/users/traitement_add_user">
         {% csrf_token %}
         {{ form.as_ul }}
         <input type="submit" value="Ajouter l'utilisateur">
     </form>
-
-    <a href="/market">Retourner à l'accueil</a>
 </body>
 </html>

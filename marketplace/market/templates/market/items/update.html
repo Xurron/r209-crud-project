@@ -7,11 +7,11 @@
     <title>Marketplace - Modification d'un produit</title>
 </head>
 <body>
+    <a class="btn-user" href="/market">Retourner à l'accueil</a>
     <form method="post" action="/market/items/update/{{id}}/">
         {% csrf_token %}
         {{ form.as_ul }}
         <input type="submit" value="Modifier le produit">
     </form>
-    <a href="/market">Retourner à l'accueil</a>
 </body>
 </html>
