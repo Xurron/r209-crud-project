@@ -31,6 +31,7 @@ def login_user(request):
                 request.session['user_id'] = user.id
                 request.session['user_name'] = user.name
                 return HttpResponseRedirect('/market')
+        else:
             messages.error(request, "Mauvais nom d'utilisateur/mot de passe.")
             return HttpResponseRedirect('/market/login')
     else:
