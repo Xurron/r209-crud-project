@@ -1,8 +1,8 @@
-# R209 - Projet CRUD boutique en ligne
+# R209 - Projet CRUD Marketplace
 
 ## Description
 
-Le projet consiste à créer une boutique en ligne avec les fonctionnalités CRUD (Create, Read, Update, Delete) pour les items et les utilisateurs. Le site peut être utilisé pour autre chose qu'une boutique puisqu'il n'y a pas de section "panier", "ma commande" ou encore "paiement".
+Le projet consiste à créer une boutique en ligne avec les fonctionnalités CRUD (Create, Read, Update, Delete) pour les items et les utilisateurs. Le site peut être utilisé pour autre chose qu'une boutique puisqu'il n'y a pas de section "panier / mes commandes" et "paiement".
 
 ## Fonctionnalités
 
